@@ -33,10 +33,12 @@ class View3DPanel(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
     bl_category = "0 A.D. Export"
+    bl_context = "objectmode"
     bl_options = {"DEFAULT_CLOSED"}
 
 
 class ExportSettingsPanel(View3DPanel):
+    bl_idname = "view3d.export0ad_settings"
     bl_label = "Export Settings"
     bl_options = {"HIDE_HEADER"}
 
@@ -49,6 +51,7 @@ class ExportSettingsPanel(View3DPanel):
 
 
 class ExportActorPanel(View3DPanel):
+    bl_idname = "view3d.export0ad_actor"
     bl_label = "Export Actor"
 
     def draw(self, context):
@@ -61,6 +64,7 @@ class ExportActorPanel(View3DPanel):
 
 
 class ExportEntityPanel(View3DPanel):
+    bl_idname = "view3d.export0ad_entity"
     bl_label = "Export Entity"
 
     def draw(self, context):
@@ -69,11 +73,26 @@ class ExportEntityPanel(View3DPanel):
         column.separator()
 
 
+class ExportHelpPanel(View3DPanel):
+    bl_idname = "view3d.export0ad_help"
+    bl_label = "Help"
+
+    def draw(self, context):
+        column = self.layout.column(align=True)
+        column.operator("wm.url_open", text="0 A.D. Wiki").url = "https://trac.wildfiregames.com/wiki"
+        column.operator("wm.url_open", text="0 A.D. Basic Static Manual Exporting").url = "https://trac.wildfiregames.com/wiki/Basic3DImplementation"
+        column.operator("wm.url_open", text="0 A.D. Basic Animation Manual Exporting").url = "https://trac.wildfiregames.com/wiki/BasicAnimationImplementation"
+        column.operator("wm.url_open", text="0 A.D. Animation Manual Exporting").url = "https://trac.wildfiregames.com/wiki/AnimationExportTutorial"
+        column.operator("wm.url_open", text="0 A.D. Lowpoly Tips").url = "https://wildfiregames.com/forum/index.php?/topic/18340-lowpoly-tips/"
+        column.operator("wm.url_open", text="0 A.D. Bake AO Maps").url = "https://wildfiregames.com/forum/index.php?/topic/17542-how-to-importexport-assets-and-bake-ao-maps-in-blender3d/"
+
+
 def get_addon_classes():
     addon_classes = [
         ExportSettingsPanel,
         ExportActorPanel,
         ExportEntityPanel,
+        ExportHelpPanel,
     ]
     addon_classes += export_0ad.get_classes_to_register()
     return addon_classes
